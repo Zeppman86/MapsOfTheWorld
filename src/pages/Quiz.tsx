@@ -2,16 +2,19 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
-import { ArrowLeft, Trophy, RefreshCw, Globe, Star, MapPin, Zap, Skull, Ghost, AlertTriangle, Globe2 } from 'lucide-react';
+import { ArrowLeft, Trophy, RefreshCw, Globe, Star, MapPin, Zap, Skull, Ghost, AlertTriangle, Globe2, Brain } from 'lucide-react';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { Flag } from '@/components/Flag';
 import { generateQuiz, Question, QuizMode, QuizFilter } from '@/lib/game';
-import { continents, Difficulty, Continent } from '@/data/countries';
+import { continents, Difficulty, Continent, countries } from '@/data/countries';
+import { eruditLevels, EruditLevel } from '@/data/eruditLevels';
+import { EruditQuiz } from '@/pages/EruditQuiz';
 import { cn } from '@/lib/utils';
 
 export function Quiz() {
   const [gameState, setGameState] = useState<'menu' | 'playing' | 'finished'>('menu');
+  const [eruditLevel, setEruditLevel] = useState<EruditLevel | null>(null);
   const [mode, setMode] = useState<QuizMode>('flag-to-country');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -32,6 +35,10 @@ export function Quiz() {
     setGameState('playing');
     setSelectedOption(null);
     setIsCorrect(null);
+  };
+
+  const handleEruditStart = (level: EruditLevel) => {
+    setEruditLevel(level);
   };
 
   const handleAnswer = (code: string) => {
@@ -70,6 +77,10 @@ export function Quiz() {
     }, 1500);
   };
 
+  if (eruditLevel) {
+    return <EruditQuiz initialLevel={eruditLevel} onExit={() => setEruditLevel(null)} />;
+  }
+
   if (gameState === 'menu') {
     return (
       <div className="min-h-screen bg-yellow-50 p-4 flex flex-col items-center justify-center relative">
@@ -88,7 +99,7 @@ export function Quiz() {
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="max-w-5xl w-full space-y-8"
+          className="max-w-5xl w-full space-y-8 py-12"
         >
           <div className="text-center">
             <h1 className="text-4xl font-black text-slate-800 mb-2">Выбери Игру</h1>
@@ -235,11 +246,45 @@ export function Quiz() {
 
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-slate-700 text-center flex items-center justify-center gap-2">
+              <Brain className="text-indigo-500" />
+              ЭРУДИТ
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {eruditLevels.map((level) => (
+                <motion.div
+                  key={level.id}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleEruditStart(level)}
+                  className="bg-white rounded-xl p-4 shadow-md border border-indigo-100 cursor-pointer hover:border-indigo-300 transition-colors flex items-center gap-4"
+                >
+                  <div className="flex-1">
+                    <h4 className="font-bold text-indigo-800">{level.title}</h4>
+                    <p className="text-xs text-indigo-500 line-clamp-1">{level.description}</p>
+                  </div>
+                  <div className="flex -space-x-2">
+                    {level.countryCodes.slice(0, 3).map(code => (
+                      <div key={code} className="w-6 h-4 rounded overflow-hidden shadow-sm ring-1 ring-white">
+                        <img 
+                          src={countries.find(c => c.alpha3 === code)?.customFlagUrl || `https://flagcdn.com/${countries.find(c => c.alpha3 === code)?.code.toLowerCase()}.svg`} 
+                          alt="" 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-slate-700 text-center flex items-center justify-center gap-2">
               <MapPin className="text-blue-500" />
               По Континентам
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {continents.map(c => (
+              {continents.filter(c => c !== 'Исторические').map(c => (
                 <Button
                   key={c}
                   variant="outline"

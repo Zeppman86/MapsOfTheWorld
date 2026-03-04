@@ -10,24 +10,34 @@ import { cn } from '@/lib/utils';
 
 // Using a TopoJSON that uses ISO 3166-1 Alpha-3 codes (e.g. "USA", "RUS")
 const geoUrl = "https://raw.githubusercontent.com/lotusms/world-map-data/main/world.json";
+const ukraineGeoUrl = "https://raw.githubusercontent.com/org-scn-design-studio-community/sdkcommunitymaps/master/geojson/Europe/Ukraine-regions.json";
 
-const disputedTerritories = [
-  { 
+const disputedTerritoriesData: Record<string, { name: string, description: string }> = {
+  "Crimea": { 
     name: "Крым", 
-    coordinates: [34.1, 45.3] as [number, number], 
-    description: "Территория фактически находится под контролем России. ООН признает её частью Украины." 
+    description: "Россия по конституции считает территорию своей, ООН признает частью Украины." 
   },
-  { 
-    name: "Донецк (ДНР)", 
-    coordinates: [37.8, 48.0] as [number, number], 
-    description: "Территория фактически находится под контролем России. ООН признает её частью Украины." 
+  "Sevastopol'": {
+    name: "Севастополь",
+    description: "Россия по конституции считает территорию своей, ООН признает частью Украины."
   },
-  { 
-    name: "Луганск (ЛНР)", 
-    coordinates: [39.3, 48.6] as [number, number], 
-    description: "Территория фактически находится под контролем России. ООН признает её частью Украины." 
+  "Donets'k": { 
+    name: "Донецкая обл.", 
+    description: "Россия по конституции считает территорию своей, ООН признает частью Украины." 
+  },
+  "Luhans'k": { 
+    name: "Луганская обл.", 
+    description: "Россия по конституции считает территорию своей, ООН признает частью Украины." 
+  },
+  "Zaporizhzhya": { 
+    name: "Запорожская обл.", 
+    description: "Россия по конституции считает территорию своей, ООН признает частью Украины." 
+  },
+  "Kherson": { 
+    name: "Херсонская обл.", 
+    description: "Россия по конституции считает территорию своей, ООН признает частью Украины." 
   }
-];
+};
 
 export function MapExplorer() {
   const [position, setPosition] = useState({ coordinates: [0, 20] as [number, number], zoom: 1 });
@@ -35,12 +45,16 @@ export function MapExplorer() {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [geoData, setGeoData] = useState<any>(null);
+  const [ukraineGeoData, setUkraineGeoData] = useState<any>(null);
 
   useEffect(() => {
-    fetch(geoUrl)
-      .then((res) => res.json())
-      .then((data) => {
-        setGeoData(data);
+    Promise.all([
+      fetch(geoUrl).then((res) => res.json()),
+      fetch(ukraineGeoUrl).then((res) => res.json())
+    ])
+      .then(([worldData, ukraineData]) => {
+        setGeoData(worldData);
+        setUkraineGeoData(ukraineData);
         setLoaded(true);
       })
       .catch((err) => console.error("Failed to load map data", err));
@@ -212,31 +226,50 @@ export function MapExplorer() {
                 }
               </Geographies>
             )}
-            {disputedTerritories.map((territory) => (
-              <Marker 
-                key={territory.name} 
-                coordinates={territory.coordinates}
-                onClick={() => {
-                  setSelectedCountry(null);
-                  setStatusMessage(`${territory.name}: ${territory.description}`);
-                }}
-              >
-                <circle r={2 / position.zoom} fill="#F43F5E" stroke="#FFF" strokeWidth={0.5 / position.zoom} className="cursor-pointer hover:fill-rose-600 transition-colors" />
-                <text
-                  textAnchor="middle"
-                  y={-5 / position.zoom}
-                  style={{
-                    fontFamily: "system-ui",
-                    fill: "#5D5A6D",
-                    fontSize: `${3 / position.zoom}px`,
-                    fontWeight: "bold",
-                    pointerEvents: "none"
-                  }}
-                >
-                  {territory.name}
-                </text>
-              </Marker>
-            ))}
+            {ukraineGeoData && (
+              <Geographies geography={ukraineGeoData}>
+                {({ geographies }) =>
+                  geographies
+                    .filter(geo => disputedTerritoriesData[geo.properties.NAME_1])
+                    .map((geo) => {
+                      const name = geo.properties.NAME_1;
+                      const data = disputedTerritoriesData[name];
+                      
+                      return (
+                        <Geography
+                          key={geo.rsmKey}
+                          geography={geo}
+                          onClick={() => {
+                            setSelectedCountry(null);
+                            setStatusMessage(`${data.name}: ${data.description}`);
+                          }}
+                          style={{
+                            default: {
+                              fill: "#D1D5DB",
+                              stroke: "#FFF",
+                              strokeWidth: 0.5,
+                              outline: "none",
+                            },
+                            hover: {
+                              fill: "#E5E7EB",
+                              stroke: "#FFF",
+                              strokeWidth: 0.75,
+                              outline: "none",
+                              cursor: "pointer",
+                            },
+                            pressed: {
+                              fill: "#D1D5DB",
+                              stroke: "#FFF",
+                              strokeWidth: 1,
+                              outline: "none",
+                            },
+                          }}
+                        />
+                      );
+                    })
+                }
+              </Geographies>
+            )}
           </ZoomableGroup>
         </ComposableMap>
       </div>

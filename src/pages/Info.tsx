@@ -122,31 +122,130 @@ export function Info() {
           {/* Section 4: Fun Facts */}
           <section className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl p-8 shadow-xl text-white">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
-              ✨ Интересный факт
+              ✨ Интересные факты
             </h2>
-            <p className="text-indigo-100 leading-relaxed text-lg">
-              Почти все флаги стран мира — прямоугольные. Исключения всего три:
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6">
-              <div className="bg-white/10 backdrop-blur p-4 rounded-xl text-center flex flex-col items-center gap-3">
-                <Flag code="NP" size="lg" className="shadow-lg" />
-                <div>
-                  <div className="font-bold text-xl mb-1">Непал</div>
-                  <p className="text-sm text-indigo-200">Единственный непрямоугольный (два треугольника)</p>
+            
+            <div className="space-y-8">
+              <div>
+                <p className="text-indigo-100 leading-relaxed text-lg mb-4">
+                  Почти все флаги стран мира — прямоугольные. Исключения всего три:
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  <div className="bg-white/10 backdrop-blur p-4 rounded-xl text-center flex flex-col items-center gap-3">
+                    <Flag code="NP" size="lg" className="shadow-lg" />
+                    <div>
+                      <div className="font-bold text-xl mb-1">Непал</div>
+                      <p className="text-sm text-indigo-200">Единственный непрямоугольный (два треугольника)</p>
+                    </div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur p-4 rounded-xl text-center flex flex-col items-center gap-3">
+                    <Flag code="CH" size="lg" className="shadow-lg" />
+                    <div>
+                      <div className="font-bold text-xl mb-1">Швейцария</div>
+                      <p className="text-sm text-indigo-200">Квадратная форма</p>
+                    </div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur p-4 rounded-xl text-center flex flex-col items-center gap-3">
+                    <Flag code="VA" size="lg" className="shadow-lg" />
+                    <div>
+                      <div className="font-bold text-xl mb-1">Ватикан</div>
+                      <p className="text-sm text-indigo-200">Квадратная форма</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="bg-white/10 backdrop-blur p-4 rounded-xl text-center flex flex-col items-center gap-3">
-                <Flag code="CH" size="lg" className="shadow-lg" />
+
+              <div className="h-px bg-white/20" />
+
+              <div className="grid md:grid-cols-2 gap-8">
                 <div>
-                  <div className="font-bold text-xl mb-1">Швейцария</div>
-                  <p className="text-sm text-indigo-200">Квадратная форма</p>
+                  <h3 className="text-xl font-bold mb-4 text-yellow-300">Самые старые флаги</h3>
+                  <ul className="space-y-4 text-indigo-100">
+                    <li className="flex items-center gap-3 bg-white/10 p-3 rounded-xl">
+                      <Flag code="DK" size="md" className="shrink-0 shadow-md" />
+                      <div>
+                        <span className="font-bold block">Дания (1219 г.)</span>
+                        <span className="text-sm opacity-80">Старейший непрерывно используемый</span>
+                      </div>
+                    </li>
+                    <li className="flex items-center gap-3 bg-white/10 p-3 rounded-xl">
+                      <Flag code="AT" size="md" className="shrink-0 shadow-md" />
+                      <div>
+                        <span className="font-bold block">Австрия (1230 г.)</span>
+                      </div>
+                    </li>
+                    <li className="flex items-center gap-3 bg-white/10 p-3 rounded-xl">
+                      <Flag code="LV" size="md" className="shrink-0 shadow-md" />
+                      <div>
+                        <span className="font-bold block">Латвия (1280 г.)</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h3 className="text-xl font-bold mb-4 text-yellow-300">Уникальные цвета</h3>
+                  <ul className="space-y-4 text-indigo-100">
+                    <li className="bg-white/10 p-3 rounded-xl">
+                      <div className="flex gap-2 mb-2">
+                        <Flag code="DM" size="sm" className="shadow-md" />
+                        <Flag code="NI" size="sm" className="shadow-md" />
+                      </div>
+                      <div>
+                        <span className="font-bold block text-purple-300">Фиолетовый цвет</span>
+                        <span className="text-sm opacity-80">Встречается только на флагах Доминики и Никарагуа</span>
+                      </div>
+                    </li>
+                    <li className="flex items-center gap-3 bg-white/10 p-3 rounded-xl">
+                      <Flag code="JM" size="md" className="shrink-0 shadow-md" />
+                      <div>
+                        <span className="font-bold block text-yellow-300">Ямайка</span>
+                        <span className="text-sm opacity-80">Единственный флаг без красного, белого или синего цветов</span>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
-              <div className="bg-white/10 backdrop-blur p-4 rounded-xl text-center flex flex-col items-center gap-3">
-                <Flag code="VA" size="lg" className="shadow-lg" />
-                <div>
-                  <div className="font-bold text-xl mb-1">Ватикан</div>
-                  <p className="text-sm text-indigo-200">Квадратная форма</p>
+
+              <div className="h-px bg-white/20" />
+
+              <div>
+                <h3 className="text-xl font-bold mb-4 text-yellow-300">Символы на флагах</h3>
+                <div className="grid sm:grid-cols-2 gap-4 text-indigo-100">
+                  <div className="bg-white/10 p-3 rounded-xl flex items-center gap-3">
+                    <div className="flex flex-col gap-1 shrink-0">
+                      <Flag code="MZ" size="sm" />
+                      <Flag code="GT" size="sm" />
+                    </div>
+                    <div>
+                      <strong className="block text-yellow-200">Оружие</strong>
+                      <span className="text-sm">Мозамбик (АК-47), Гватемала (винтовки), Гаити (пушки)</span>
+                    </div>
+                  </div>
+                  <div className="bg-white/10 p-3 rounded-xl flex items-center gap-3">
+                    <div className="flex flex-col gap-1 shrink-0">
+                      <Flag code="CY" size="sm" />
+                      <Flag code="XK" size="sm" />
+                    </div>
+                    <div>
+                      <strong className="block text-yellow-200">Карта страны</strong>
+                      <span className="text-sm">Кипр и Косово</span>
+                    </div>
+                  </div>
+                  <div className="bg-white/10 p-3 rounded-xl flex items-center gap-3">
+                    <Flag code="BZ" size="md" className="shrink-0" />
+                    <div>
+                      <strong className="block text-yellow-200">Люди</strong>
+                      <span className="text-sm">Белиз (два дровосека)</span>
+                    </div>
+                  </div>
+                  <div className="bg-white/10 p-3 rounded-xl flex items-center gap-3">
+                    <Flag code="BT" size="md" className="shrink-0" />
+                    <div>
+                      <strong className="block text-yellow-200">Дракон</strong>
+                      <span className="text-sm">Бутан (Громовой Дракон)</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
